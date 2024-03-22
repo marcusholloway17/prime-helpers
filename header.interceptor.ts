@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable } from "@angular/core";
 import {
   HttpRequest,
   HttpHandler,
@@ -6,11 +6,11 @@ import {
   HttpInterceptor,
   HTTP_INTERCEPTORS,
   HttpHeaders,
-} from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
-import { AUTH_SERVICE } from '../views/auth/types';
-import { AuthService } from '../views/auth/services/auth.service';
+} from "@angular/common/http";
+import { Observable, tap } from "rxjs";
+import { environment } from "src/environments/environment.development";
+import { AUTH_SERVICE } from "../views/auth/types";
+import { AuthService } from "../views/auth/services/auth.service";
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
@@ -31,21 +31,21 @@ export class HeaderInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (/10000/.test(request.url) || /third-parties/.test(request.url)) {
+    if (/10003/.test(request.url) || /api-generator/.test(request.url)) {
       const headers = new HttpHeaders().set(
-        'authorization',
-        request.headers.get('authorization') ?? `Bearer ${this.authToken}` ?? ''
+        "authorization",
+        request.headers.get("authorization") ?? `Bearer ${this.authToken}` ?? ""
       );
 
       request = request.clone({ headers });
     }
     if (/auth/.test(request.url)) {
       const headers = new HttpHeaders()
-        .set('x-client-id', environment.auth.clientId)
-        .set('x-client-secret', environment.auth.clientSecret)
+        .set("x-client-id", environment.auth.clientId)
+        .set("x-client-secret", environment.auth.clientSecret)
         .set(
-          'authorization',
-          request.headers.get('authorization') ?? `Bearer ${this.authToken}`
+          "authorization",
+          request.headers.get("authorization") ?? `Bearer ${this.authToken}`
         );
 
       request = request.clone({ headers });
