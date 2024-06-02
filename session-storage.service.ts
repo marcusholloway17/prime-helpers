@@ -1,11 +1,13 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT_SESSION_STORAGE } from '@azlabsjs/ngx-storage';
-
+import { Inject, Injectable } from "@angular/core";
+import { createStorage } from "@azlabsjs/secure-web-storage";
+import { STORAGE_SECRET } from "./constants";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class SessionStorageService {
-  constructor(@Inject(DOCUMENT_SESSION_STORAGE) private storage: Storage) {}
+  public storage = createStorage(window.sessionStorage, STORAGE_SECRET);
+
+  constructor() {}
 
   setItem(key: string, data: any) {
     this.storage.setItem(key, JSON.stringify(data));
