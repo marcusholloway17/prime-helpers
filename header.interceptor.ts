@@ -39,13 +39,9 @@ export class HeaderInterceptor implements HttpInterceptor {
       .set(
         "x-client-secret",
         this.authService.clientSecret ?? environment.auth.clientSecret
-      );
-    if (this.authService.isLoggedIn()) {
-      headers.append(
-        "x-card-ref",
-        request.headers.get("x-card-ref") ?? this.cardRef
-      );
-    }
+      )
+      .set("x-card-ref", this.authService.isLoggedIn() ? this.cardRef : "");
+
     request = request.clone({ headers });
     return next.handle(request);
   }
