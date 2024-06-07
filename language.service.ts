@@ -1,19 +1,24 @@
-import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { BehaviorSubject } from "rxjs";
+import { LocalStorageService } from "./local-storage.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class LanguageService {
   private _locale$ = new BehaviorSubject<string>(
-    this.translateService.getBrowserLang() ?? 'fr'
+    this.translateService.getBrowserLang() ?? "fr"
   );
   public locale = this._locale$.asObservable();
 
-  constructor(private translateService: TranslateService) {}
+  constructor(
+    private translateService: TranslateService,
+    private localStorageService: LocalStorageService
+  ) {}
 
   setLocale(locale: string) {
+    this.localStorageService.setItem("locale", locale);
     this._locale$.next(locale);
   }
   getLocale() {
@@ -32,7 +37,10 @@ export class LanguageService {
     return this.translateService.getTranslation(locale);
   }
   getBrowserLang() {
-    return this.translateService.getBrowserLang();
+    return (
+      JSON.parse(this.localStorageService.getItem("locale")) ??
+      this.translateService.getBrowserLang()
+    );
   }
   instant(key: string | string[], interpolateParams?: Object) {
     return this.translateService.instant(key, interpolateParams);
