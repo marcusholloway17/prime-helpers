@@ -15,7 +15,9 @@ export class LanguageService {
   constructor(
     private translateService: TranslateService,
     private localStorageService: LocalStorageService
-  ) {}
+  ) {
+    this._locale$.next(this.getBrowserLang());
+  }
 
   setLocale(locale: string) {
     this.localStorageService.setItem("locale", locale);
