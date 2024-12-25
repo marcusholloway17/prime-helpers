@@ -6,13 +6,13 @@ import { BehaviorSubject } from "rxjs";
   providedIn: "root",
 })
 export class ThemeService {
-  public lightTheme = "arya-blue";
-  public darkTheme = "arya-blue";
+  public lightTheme = "light";
+  public darkTheme = "dark";
 
   private _theme$ = new BehaviorSubject<string>(this.getDefaultBrowserTheme());
   public theme$ = this._theme$.asObservable();
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document) { }
 
   getTheme() {
     return this._theme$.getValue();
